@@ -1,0 +1,33 @@
+{
+  "Files": [
+    {
+      "Id": "C:\\Users\\ilyao\\HotelProject\\src\\HotelProject.WebComponents\\wwwroot\\css\\app.css",
+      "PackagePath": "staticwebassets\\css\\app.css"
+    },
+    {
+      "Id": "C:\\Users\\ilyao\\HotelProject\\src\\HotelProject.WebComponents\\wwwroot\\css\\hotel_styles.css",
+      "PackagePath": "staticwebassets\\css\\hotel_styles.css"
+    },
+    {
+      "Id": "C:\\Users\\ilyao\\HotelProject\\src\\HotelProject.WebComponents\\wwwroot\\img\\logo.png",
+      "PackagePath": "staticwebassets\\img\\logo.png"
+    },
+    {
+      "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.Client.WebComponents.Microsoft.AspNetCore.StaticWebAssets.props",
+      "PackagePath": "build\\Microsoft.AspNetCore.StaticWebAssets.props"
+    },
+    {
+      "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.build.Client.WebComponents.props",
+      "PackagePath": "build\\Client.WebComponents.props"
+    },
+    {
+      "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.buildMultiTargeting.Client.WebComponents.props",
+      "PackagePath": "buildMultiTargeting\\Client.WebComponents.props"
+    },
+    {
+      "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.buildTransitive.Client.WebComponents.props",
+      "PackagePath": "buildTransitive\\Client.WebComponents.props"
+    }
+  ],
+  "ElementsToRemove": []
+}

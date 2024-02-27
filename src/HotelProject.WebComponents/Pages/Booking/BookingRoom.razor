@@ -1,0 +1,108 @@
+﻿@page "/booking/{RoomId}"
+
+@inject IBookingManager BookingManager
+@inject IRoomManager RoomManager
+@inject IAuthenticationManager AuthenticationManager
+@inject NavigationManager NavigationManager
+@inject IToastService ToastService
+
+
+<div class="form-wrapper">
+    <EditForm Model="model"
+              OnValidSubmit="submit">
+
+        <DataAnnotationsValidator />
+
+        <div class="auth-form__input-wrap">
+            <InputNumber @bind-Value="model.PersonCount"
+                         placeholder="Колво человек" />
+            <ValidationMessage For="(() => model.PersonCount)" />
+        </div>
+
+        <div class="auth-form__input-wrap">
+            <input @bind="model.CheckinDate"
+                   type="datetime-local"
+                   min="@model.CheckinDate.ToString("yyyy-MM-dd")"
+                   placeholder="Дата вьезда" />
+            <ValidationMessage For="(() => model.CheckinDate)" />
+        </div>
+
+        <div class="auth-form__input-wrap">
+            <input @bind="model.CheckoutDate"
+                   type="datetime-local"
+                   min="@model.CheckoutDate.ToString("yyyy-MM-dd")"
+                   placeholder="Дата выезда" />
+            <ValidationMessage For="(() => model.CheckoutDate)" />
+        </div>
+
+        <button class="auth-form__btn"
+                type="submit">
+            Забронировать
+        </button>
+
+    </EditForm>
+</div>
+
+
+@code {
+    [Parameter] public string RoomId { get; set; }
+
+    private bool isLoaded;
+
+    private RoomResponse RoomResponse;
+    private BookingRequest model = new();
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+        await loadDataAsync();
+
+        var claims = await AuthenticationManager.CurrentUser();
+        var userId = claims.FindFirst(c => c.Type == "user_guid"!).Value;
+        model.UserId = Guid.Parse(userId);
+        model.RoomName = RoomResponse.Name;
+        model.StatusName = "Ожидание";
+
+    }
+
+    private async Task loadDataAsync()
+    {
+        isLoaded = false;
+        var response = await RoomManager.GetRoom(RoomId);
+        if (response.Succeeded)
+        {
+            RoomResponse = response.Data;
+        }
+        isLoaded = true;
+    }
+
+    private async Task submit()
+    {
+        isLoaded = false;
+        var response = await BookingManager.Add(model);
+        if (!response.Succeeded)
+        {
+            foreach (var item in response.Messages)
+            {
+                ToastService.ShowError(item);
+            }
+            return;
+        }
+        else
+        {
+            foreach (var item in response.Messages)
+            {
+                ToastService.ShowError(item);
+            }
+        }
+
+        NavigationManager.NavigateTo("/home", true, true);
+
+        isLoaded = true;
+    }
+}

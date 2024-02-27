@@ -1,0 +1,72 @@
+﻿@inject IAuthenticationManager AuthenticationManager
+@inject AuthenticationStateProvider AuthenticationStateProvider
+
+<nav>
+    <ul class="menu">
+        <li class="logo">
+            <a href="home">HotelProject</a>
+        </li>
+        <li class="item @navBarState">
+            <a href="home" @onclick="() => switchNavBar()">Главная</a>
+        </li>
+        <li class="item @navBarState">
+            <a href="booking" @onclick="() => switchNavBar()">Комнаты</a>
+        </li>
+
+        @if (isUserAuth)
+        {
+            <li class="item @navBarState">
+                <a href="your_bookings" @onclick="() => switchNavBar()">Ваши брони</a>
+            </li>
+            <li class="item button @navBarState">
+                <a href="profile">@userName</a>
+            </li>
+            <li class="item button secondary @navBarState">
+                <a @onclick="AuthenticationManager.Logout">Выйти</a>
+            </li>
+        }
+        else
+        {
+            <li class="item button @navBarState">
+                <a href="login">Войти</a>
+            </li>
+            <li class="item button secondary @navBarState">
+                <a href="registration">Регистрация</a>
+            </li>      
+        }
+
+        <li class="toggle">
+            <a @onclick="() => switchNavBar()"><span class="bars"></span></a>
+        </li>
+    </ul>
+</nav>
+
+@code {
+    private const string activeNavBarState = "active";
+    private string navBarState = string.Empty;
+
+    private bool isUserAuth;
+    private bool isUserRoleAdmin;
+    private string userName = "None";
+
+    private void switchNavBar()
+    {
+        navBarState = navBarState == activeNavBarState ? string.Empty : activeNavBarState;
+    }
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+        var state = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+        if (state.User.Identity.IsAuthenticated)
+        {
+            isUserAuth = true;
+            userName = state.User.Identity.Name;
+        }
+    }
+}

@@ -1,0 +1,164 @@
+﻿@page "/booking"
+
+
+@inject IRoomManager RoomManager
+@inject NavigationManager NavigationManager
+
+
+<div class="page-content">
+    <div class="date-filter">
+        <div class="date-filter__item">
+            <span>Прибытие</span>
+            <input type="datetime-local"
+                   min="@CheckinDate.ToString("yyyy-MM-dd")" 
+                   @bind="@CheckinDate"
+                   @bind:after="async () => await loadDataAsync()"/>
+
+        </div>
+        <div class="date-filter__item">
+            <span>Отбытие</span>
+            <input type="datetime-local"
+                   min="@CheckoutDate.ToString("yyyy-MM-dd")"
+                   @bind="CheckoutDate"
+                   @bind:after="async () => await loadDataAsync()" />
+        </div>
+
+    </div>
+
+    <div class="rooms-booking">
+        @if (isLoaded)
+        {
+            <div class="type-container__border">
+                <span>Комнаты Стандарт</span>
+            </div>
+            <div class="cards">
+                @foreach (var room in roomList.Where(r => r.TypeName == "Стандарт"))
+                {
+                    var roomStyle = "room " + GetRoomStyle(room.IsActive, room.IsCleaned, room.IsRoomNotBusy);
+                    <div class="@roomStyle" @onclick="() => GoToBookingRoom(room.Id)">
+                        <span>@room.Name</span>
+                    </div>
+                }
+            </div>
+
+            <div class="type-container__border">
+                <span>Комнаты ВИП</span>
+            </div>
+            <div class="cards">
+                @foreach (var room in roomList.Where(r => r.TypeName == "ВИП"))
+                {
+                    var roomStyle = "room " + GetRoomStyle(room.IsActive, room.IsCleaned, room.IsRoomNotBusy);
+                    <div class="@roomStyle" @onclick="() => GoToBookingRoom(room.Id)">
+                        <span>@room.Name</span>
+                    </div>
+                }
+            </div>
+
+
+            <div class="type-container__border">
+                <span>Комнаты Премиум</span>
+            </div>
+            <div class="cards">
+                @foreach (var room in roomList.Where(r => r.TypeName == "Премиум"))
+                {
+                    var roomStyle = "room " + GetRoomStyle(room.IsActive, room.IsCleaned, room.IsRoomNotBusy);
+                    <div class="@roomStyle" @onclick="() => GoToBookingRoom(room.Id)">
+                        <span>@room.Name</span>
+                    </div>
+                }
+            </div>
+        }
+        else
+        {
+            <h1>Loading...</h1>
+        }
+
+
+    </div>
+
+</div>
+
+@code {
+    private bool isLoaded;
+    private List<RoomResponse> roomList = [];
+
+    private DateTime checkinDate = DateTime.Now.Date.AddHours(10);
+    public DateTime CheckinDate 
+    {
+        get => checkinDate;
+        set
+        {
+            checkinDate = value == DateTime.MinValue ? DateTime.Now.Date.AddHours(10) : value;
+            if (CheckoutDate.Date <= CheckinDate.Date)
+                CheckoutDate = CheckoutDate.AddDays(1);
+            StateHasChanged();
+        }
+    }
+
+    private DateTime checkoutDate = DateTime.Now.Date.AddDays(1).AddHours(12);
+    public DateTime CheckoutDate
+    {
+        get => checkoutDate;
+        set
+        {
+            checkoutDate = value == DateTime.MinValue ? DateTime.Now.Date.AddDays(1).AddHours(12) : value;
+            if (CheckinDate.Date >= CheckoutDate.Date)
+                CheckinDate = CheckoutDate.AddDays(-1).AddHours(-2);
+            StateHasChanged();
+        }
+    }
+
+    private const string roomIsBusyStyle = "room-is-busy";
+    private const string roomIsNotCleanStyle = "room-is-not-clean";
+    private const string roomIsInactiveStyle = "room-is-inactive";
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+        await loadDataAsync();
+    }
+
+    private async Task loadDataAsync()
+    {
+        try
+        {
+            isLoaded = false;
+            var response = await RoomManager.GetDataAsync(CheckinDate, CheckoutDate);
+            if (response.Succeeded)
+            {
+                roomList = response.Data;
+            }
+            else
+            {
+
+            }
+        }
+        finally
+        {
+            isLoaded = true;
+        }
+
+    }
+
+    private string GetRoomStyle(bool isActive, bool isCleaned, bool isRoomNotBusy)
+    {
+        if (!isActive)
+            return roomIsInactiveStyle;
+        if (!isCleaned)
+            return roomIsNotCleanStyle;
+        if (!isRoomNotBusy)
+            return roomIsBusyStyle;
+        return string.Empty;
+    }
+
+    private void GoToBookingRoom(Guid roomId)
+    {
+        NavigationManager.NavigateTo($"/booking/{roomId}");
+    }
+    
+}

@@ -1,0 +1,81 @@
+﻿@page "/your_bookings/{BookingId}"
+@using HotelProject.Application.Requests.Booking
+
+@inject IBookingManager BookingManager
+@inject IAuthenticationManager AuthenticationManager
+
+
+<div class="form-wrapper">
+    <EditForm Model="model"
+              OnValidSubmit="submit">
+
+        <DataAnnotationsValidator />
+
+        <div class="auth-form__input-wrap">
+            <InputNumber @bind-Value="model.PersonCount"
+                         placeholder="Колво человек" />
+            <ValidationMessage For="(() => model.PersonCount)" />
+        </div>
+
+        <div class="auth-form__input-wrap">
+            <InputDate @bind-Value="model.CheckinDate"
+                         placeholder="Дата вьезда" />
+            <ValidationMessage For="(() => model.CheckinDate)" />
+        </div>
+
+        <div class="auth-form__input-wrap">
+            <InputDate @bind-Value="model.CheckoutDate"
+                       placeholder="Дата выезда" />
+            <ValidationMessage For="(() => model.CheckoutDate)" />
+        </div>
+    
+        <button class="auth-form__btn"
+                type="submit">
+            Забронировать
+        </button>
+
+    </EditForm>
+</div>
+
+
+@code {
+    [Parameter] public string BookingId { get; set; }
+
+    private bool isLoaded;
+
+    private BookingResponse? bookingResponse;
+    private BookingRequest model = new();
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+        await loadDataAsync();
+
+        var claims = await AuthenticationManager.CurrentUser();
+        var userId = claims.FindFirst(c => c.Type == "user_guid"!).Value;
+        model.UserId = Guid.Parse(userId);
+        model.RoomName = bookingResponse.RoomName;
+        model.StatusName = "Ожидание";
+
+    }
+
+    private async Task loadDataAsync()
+    {
+        isLoaded = false;
+        var response = await BookingManager.GetByBookingId(BookingId);
+        if (response.Succeeded)
+        {
+            bookingResponse = response.Data;
+        }
+    }
+
+    private async Task submit()
+    {
+        
+    }
+}

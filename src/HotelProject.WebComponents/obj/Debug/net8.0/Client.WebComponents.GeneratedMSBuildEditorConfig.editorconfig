@@ -1,0 +1,63 @@
+is_global = true
+build_property.TargetFramework = net8.0
+build_property.TargetPlatformMinVersion = 
+build_property.UsingMicrosoftNETSdkWeb = 
+build_property.ProjectTypeGuids = 
+build_property.InvariantGlobalization = 
+build_property.PlatformNeutralAssembly = 
+build_property.EnforceExtendedAnalyzerRules = 
+build_property._SupportedPlatformList = Linux,macOS,Windows,browser
+build_property.RootNamespace = Client.WebComponents
+build_property.RootNamespace = Client.WebComponents
+build_property.ProjectDir = C:\Users\ilyao\HotelProject\src\HotelProject.WebComponents\
+build_property.EnableComHosting = 
+build_property.EnableGeneratedComInterfaceComImportInterop = 
+build_property.RazorLangVersion = 8.0
+build_property.SupportLocalizedComponentNames = 
+build_property.GenerateRazorMetadataSourceChecksumAttributes = 
+build_property.MSBuildProjectDirectory = C:\Users\ilyao\HotelProject\src\HotelProject.WebComponents
+build_property._RazorSourceGeneratorDebug = 
+
+[C:/Users/ilyao/HotelProject/src/HotelProject.WebComponents/Layout/EmptyLayout.razor]
+build_metadata.AdditionalFiles.TargetPath = TGF5b3V0XEVtcHR5TGF5b3V0LnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/ilyao/HotelProject/src/HotelProject.WebComponents/Layout/MainLayout.razor]
+build_metadata.AdditionalFiles.TargetPath = TGF5b3V0XE1haW5MYXlvdXQucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/ilyao/HotelProject/src/HotelProject.WebComponents/Layout/NavMenu.razor]
+build_metadata.AdditionalFiles.TargetPath = TGF5b3V0XE5hdk1lbnUucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/ilyao/HotelProject/src/HotelProject.WebComponents/Pages/Authentication/Login.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQXV0aGVudGljYXRpb25cTG9naW4ucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/ilyao/HotelProject/src/HotelProject.WebComponents/Pages/Authentication/Registration.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQXV0aGVudGljYXRpb25cUmVnaXN0cmF0aW9uLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/ilyao/HotelProject/src/HotelProject.WebComponents/Pages/BookingUser/BookingList.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQm9va2luZ1VzZXJcQm9va2luZ0xpc3QucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/ilyao/HotelProject/src/HotelProject.WebComponents/Pages/BookingUser/BookingUser.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQm9va2luZ1VzZXJcQm9va2luZ1VzZXIucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/ilyao/HotelProject/src/HotelProject.WebComponents/Pages/Booking/Booking.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQm9va2luZ1xCb29raW5nLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/ilyao/HotelProject/src/HotelProject.WebComponents/Pages/Booking/BookingRoom.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQm9va2luZ1xCb29raW5nUm9vbS5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/ilyao/HotelProject/src/HotelProject.WebComponents/Pages/Content/Home.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ29udGVudFxIb21lLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/ilyao/HotelProject/src/HotelProject.WebComponents/_Imports.razor]
+build_metadata.AdditionalFiles.TargetPath = X0ltcG9ydHMucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 

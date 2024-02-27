@@ -1,0 +1,134 @@
+﻿@page "/registration"
+
+@layout EmptyLayout
+
+@inject IUserManager UserManager
+@inject NavigationManager NavigationManager
+@inject IToastService ToastService
+
+
+<div class="form-wrapper">
+    @if (isLoaded)
+    {
+        <EditForm class="auth-form"
+                  Model="model"
+                  OnValidSubmit="submitAsync"
+                  autocomplete="off"
+                  novalidate>
+            <DataAnnotationsValidator />
+
+            <div class="auth-form__input-wrap">
+                <InputText @bind-Value="model.FirstName"
+                           type="text"
+                           placeholder="Введите имя" />
+                <ValidationMessage For="(() => model.FirstName)" />
+            </div>
+
+            <div class="auth-form__input-wrap">
+                <InputText @bind-Value="model.LastName"
+                           type="text"
+                           placeholder="Введите фамилию" />
+                <ValidationMessage For="(() => model.LastName)" />
+            </div>
+
+            <div class="auth-form__input-wrap">
+                <InputText @bind-Value="model.MiddleName"
+                           type="text"
+                           placeholder="Введите отчество" />
+                <ValidationMessage For="(() => model.MiddleName)" />
+            </div>
+
+            <div class="auth-form__input-wrap">
+                <InputText @bind-Value="model.UserName"
+                           type="text"
+                           placeholder="Введите логин" />
+                <ValidationMessage For="(() => model.UserName)" />
+            </div>
+
+            <div class="auth-form__input-wrap">
+                <InputText @bind-Value="model.Password"
+                           type="password"
+                           placeholder="Введите пароль" />
+                <ValidationMessage For="(() => model.Password)" />
+            </div>
+
+            <div class="auth-form__input-wrap">
+                <InputText @bind-Value="model.ConfirmPassword"
+                           type="password"
+                           placeholder="Введите еще раз пароль" />
+                <ValidationMessage For="(() => model.ConfirmPassword)" />
+            </div>
+
+            <div class="auth-form__input-wrap">
+                <InputText @bind-Value="model.Email"
+                           type="phone"
+                           placeholder="Введите почту" />
+                <ValidationMessage For="(() => model.Email)" />
+            </div>
+
+            <div class="auth-form__input-wrap">
+                <InputText @bind-Value="model.Phone"
+                           type="phone"
+                           placeholder="Введите номер телефона" />
+                <ValidationMessage For="(() => model.Phone)" />
+            </div>
+
+            <button class="auth-form__btn"
+                    type="submit">
+                Зарегестрироваться
+            </button>
+            <a href="login" class="auth-form__switch-auth-mode">
+                или пройдите авторизируйтесь!
+            </a>
+        </EditForm>
+    }
+    else
+    {
+        <div class="loader">
+            <div class="loader-wheel"></div>
+            <div class="loader-text"></div>
+        </div>
+    }
+
+</div>
+
+
+@code {
+    private bool isLoaded = true;
+
+    private RegisterRequest model = new();
+
+    private async Task submitAsync()
+    {
+        try
+        {
+            isLoaded = false;
+            var result = await UserManager.RegisterUserAsync(model);
+            if (!result.Succeeded)
+            {
+                foreach (var item in result.Messages)
+                {
+                    ToastService.ShowError(item);
+                }
+                return;
+            }
+            else
+            {
+                foreach (var item in result.Messages)
+                {
+                    ToastService.ShowError(item);
+                }
+            }
+
+            NavigationManager.NavigateTo("login", true, true);
+        }
+        finally
+        {
+            isLoaded = true;
+        }
+        
+    }
+
+
+}
+

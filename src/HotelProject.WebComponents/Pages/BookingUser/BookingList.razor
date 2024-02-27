@@ -1,0 +1,150 @@
+﻿@page "/your_bookings"
+
+
+@inject IBookingManager BookingManager
+@inject IAuthenticationManager AuthenticationManager
+@inject IToastService ToastService
+
+@if (isLoaded)
+{
+    <div class="bookings">
+        @foreach (var booking in bookingLists)
+        {
+
+        <div class="card">
+            <span class="room-name">Имя комнаты: @booking.RoomName</span>
+            <span class="final-price">Цена: @booking.TotalPrice руб</span>
+            <span class="checkin">Дата вьезда:<br/> @booking.CheckinDate.ToString("dd.MM.yyyy")
+                    <br />@booking.CheckinDate.ToString("HH:mm")</span>
+            <span class="checkout">Дата выезда:<br/> @booking.CheckoutDate.ToString("dd.MM.yyyy")
+                    <br />@booking.CheckinDate.ToString("HH:mm")</span>
+            <span>Статус: @booking.StatusName</span>
+            <div class="card__btn">
+                    <button class="btn clean-btn" @onclick="async () => await NeedCleanRoom(booking)">Нужна уборка</button>
+                    <button class="btn cancel-btn" @onclick="async () => await CancelBooking(booking)">Отменить</button>
+            </div>
+        </div>
+        }
+    </div>
+
+}
+else
+{
+    <div class="loader">
+        <div class="loader-wheel"></div>
+        <div class="loader-text"></div>
+    </div>
+}
+
+
+@code {
+    private bool isLoaded;
+
+    private List<BookingResponse> bookingLists = [];
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+        await loadDataAsync();
+    }
+
+    private async Task loadDataAsync()
+    {
+        isLoaded = false;
+        var claims = await AuthenticationManager.CurrentUser();
+        var userId = claims.FindFirst(c => c.Type == "user_guid"!).Value;
+        var response = await BookingManager.GetByUserId(userId);
+        if (response.Succeeded)
+        {
+            bookingLists = response.Data;
+        }
+
+        isLoaded = true;
+    }
+
+    private async Task NeedCleanRoom(BookingResponse model)
+    {
+        isLoaded = false;
+        var claims = await AuthenticationManager.CurrentUser();
+        var userId = claims.FindFirst(c => c.Type == "user_guid"!).Value;
+        var bookingRequest = new BookingRequest()
+            {
+                UserId = Guid.Parse(userId),
+
+                CheckinDate = model.CheckinDate,
+                CheckoutDate = model.CheckoutDate,
+
+                RoomName = model.RoomName,
+                StatusName = model.StatusName,
+
+                PersonCount = model.PersonCount,
+
+                IsNeedCleaningRoom = true
+            };
+
+        var response = await BookingManager.Update(model.Id.ToString(), bookingRequest);
+        if (!response.Succeeded)
+        {
+            foreach (var item in response.Messages)
+            {
+                ToastService.ShowError(item);
+            }
+        }
+        else
+        {
+            foreach (var item in response.Messages)
+            {
+                ToastService.ShowSuccess(item);
+            }
+        }
+
+        await loadDataAsync();
+        isLoaded = true;
+    }
+
+    private async Task CancelBooking(BookingResponse model)
+    {
+        isLoaded = false;
+        var claims = await AuthenticationManager.CurrentUser();
+        var userId = claims.FindFirst(c => c.Type == "user_guid"!).Value;
+        var bookingRequest = new BookingRequest()
+            {
+                UserId = Guid.Parse(userId),
+
+                CheckinDate = model.CheckinDate,
+                CheckoutDate = model.CheckoutDate,
+
+                RoomName = model.RoomName,
+                StatusName = "Отменена",
+
+                PersonCount = model.PersonCount,
+
+                IsNeedCleaningRoom = false
+            };
+
+        var response = await BookingManager.Update(model.Id.ToString(), bookingRequest);
+        if (!response.Succeeded)
+        {
+            foreach (var item in response.Messages)
+            {
+                ToastService.ShowError(item);
+            }
+        }
+        else
+        {
+            foreach (var item in response.Messages)
+            {
+                ToastService.ShowSuccess(item);
+            }
+        }
+
+        await loadDataAsync();
+        isLoaded = true;
+    }
+}

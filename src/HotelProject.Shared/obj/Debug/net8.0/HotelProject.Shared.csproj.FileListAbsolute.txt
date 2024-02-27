@@ -1,0 +1,11 @@
+C:\Users\ilyao\HotelProject\src\HotelProject.Shared\bin\Debug\net8.0\HotelProject.Shared.deps.json
+C:\Users\ilyao\HotelProject\src\HotelProject.Shared\bin\Debug\net8.0\HotelProject.Shared.dll
+C:\Users\ilyao\HotelProject\src\HotelProject.Shared\bin\Debug\net8.0\HotelProject.Shared.pdb
+C:\Users\ilyao\HotelProject\src\HotelProject.Shared\obj\Debug\net8.0\HotelProject.Shared.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\ilyao\HotelProject\src\HotelProject.Shared\obj\Debug\net8.0\HotelProject.Shared.AssemblyInfoInputs.cache
+C:\Users\ilyao\HotelProject\src\HotelProject.Shared\obj\Debug\net8.0\HotelProject.Shared.AssemblyInfo.cs
+C:\Users\ilyao\HotelProject\src\HotelProject.Shared\obj\Debug\net8.0\HotelProject.Shared.csproj.CoreCompileInputs.cache
+C:\Users\ilyao\HotelProject\src\HotelProject.Shared\obj\Debug\net8.0\HotelProject.Shared.dll
+C:\Users\ilyao\HotelProject\src\HotelProject.Shared\obj\Debug\net8.0\refint\HotelProject.Shared.dll
+C:\Users\ilyao\HotelProject\src\HotelProject.Shared\obj\Debug\net8.0\HotelProject.Shared.pdb
+C:\Users\ilyao\HotelProject\src\HotelProject.Shared\obj\Debug\net8.0\ref\HotelProject.Shared.dll

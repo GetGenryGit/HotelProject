@@ -1,0 +1,91 @@
+﻿@page "/login"
+
+@layout EmptyLayout
+
+@inject IAuthenticationManager AuthenticationManager
+@inject NavigationManager NavigationManager
+@inject IToastService ToastService
+
+<div class="form-wrapper">
+    @if (isLoaded)
+    {
+        <EditForm class="auth-form"
+                  Model="model"
+                  OnValidSubmit="submitAsync"
+                  autocomplete="off"
+                  novalidate>
+            <DataAnnotationsValidator />
+
+            <div class="auth-form__input-wrap">
+                <InputText @bind-Value="model.UserName"
+                           type="text"
+                           placeholder="Введите логин" />
+                <ValidationMessage For="(() => model.UserName)" />
+            </div>
+
+            <div class="auth-form__input-wrap">
+                <InputText @bind-Value="model.Password"
+                           type="password"
+                           placeholder="Введите пароль" />
+                <ValidationMessage For="(() => model.Password)" />
+            </div>
+
+            <button class="auth-form__btn"
+                    type="submit">
+                Войти
+            </button>
+            <a href="registration" class="auth-form__switch-auth-mode">
+                или пройдите регистрацию!
+            </a>
+        </EditForm>
+    }
+    else
+    {
+        <div class="loader">
+            <div class="loader-wheel"></div>
+            <div class="loader-text"></div>
+        </div>
+    }
+
+
+</div>
+
+
+@code {
+    private bool isLoaded = true;
+
+    private TokenRequest model = new();
+
+    private async Task submitAsync()
+    {
+        try
+        {
+            isLoaded = false;
+            var result = await AuthenticationManager.Login(model);
+            if (!result.Succeeded)
+            {
+                foreach (var item in result.Messages)
+                {
+                    ToastService.ShowError(item);
+                }
+                return;
+            }
+            else
+            {
+                foreach (var item in result.Messages)
+                {
+                    ToastService.ShowError(item);
+                }
+            }
+
+            NavigationManager.NavigateTo("home", true, true);
+        }
+        finally
+        {
+            isLoaded = true;
+        }
+
+    }
+
+
+}
